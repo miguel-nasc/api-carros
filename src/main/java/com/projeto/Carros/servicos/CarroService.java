@@ -73,6 +73,37 @@ public class CarroService {
         return buildPagedModel(pageable, cars);
     }
 
+    public PagedModel<EntityModel<CarroDTO>> findByModelo(String modelo, Pageable pageable) {
+        logger.info("Find a Car by modelo!");
+        var cars = respository.findByModelo(modelo, pageable);
+        return buildPagedModel(pageable, cars);
+    }
+
+    public PagedModel<EntityModel<CarroDTO>> findByCor(String cor, Pageable pageable) {
+        logger.info("Find a Car by Color");
+        var cars = respository.findByCor(cor, pageable);
+        return buildPagedModel(pageable, cars);
+    }
+
+    public PagedModel<EntityModel<CarroDTO>> findByAno(String ano, Pageable pageable) {
+        logger.info("Find a Car by Year");
+        var cars = respository.findByAno(ano, pageable);
+        return buildPagedModel(pageable, cars);
+    }
+
+    public PagedModel<EntityModel<CarroDTO>> findByMotorizacao(String motorizacao, Pageable pageable) {
+        logger.info("Find a Car by Motorizacao");
+        var cars = respository.findByMotorizacao(motorizacao, pageable);
+        return buildPagedModel(pageable, cars);
+    }
+
+    public PagedModel<EntityModel<CarroDTO>> findByMarca(String marca, Pageable pageable) {
+        logger.info("Find a Car by Marca");
+        var cars = respository.findByMarca(marca, pageable);
+        return buildPagedModel(pageable, cars);
+    }
+
+
     //Métodos Construtivos
     private PagedModel<EntityModel<CarroDTO>> buildPagedModel(Pageable pageable, Page<Carro> cars) {
         var carWithLinks = cars.map(c -> {
@@ -87,11 +118,22 @@ public class CarroService {
     }
 
     private void addHateoasLinks(CarroDTO carro) {
-        carro.add(linkTo(methodOn(CarroController.class).findAll(0, 12, "asc"))
-                .withRel("findAll").withType("GET"));
         carro.add(linkTo(methodOn(CarroController.class).save(carro)).withRel("save").withType("POST"));
         carro.add(linkTo(methodOn(CarroController.class).update(carro)).withRel("update").withType("PUT"));
         carro.add(linkTo(methodOn(CarroController.class).delete(carro.getId())).withRel("delete").withType("DELETE"));
+
+        carro.add(linkTo(methodOn(CarroController.class).findAll(0, 12, "asc"))
+                .withRel("findAll").withType("GET"));
+        carro.add(linkTo(methodOn(CarroController.class).findByAno("2021", 0, 12, "asc"))
+                .withRel("findByAno").withType("GET"));
+        carro.add(linkTo(methodOn(CarroController.class).findByMarca("Pontiac", 0, 12, "asc"))
+                .withRel("findByMarca").withType("GET"));
+        carro.add(linkTo(methodOn(CarroController.class).findByMotorizacao("Ford", 0, 12, "asc"))
+                .withRel("findByMotorizacao").withType("GET"));
+        carro.add(linkTo(methodOn(CarroController.class).findByCor("Blue", 0, 12, "asc"))
+                .withRel("findByCor").withType("GET"));
+        carro.add(linkTo(methodOn(CarroController.class).findByModelo("NSX", 0, 12, "asc"))
+                .withRel("findByModelo").withType("GET"));
     }
 
 }

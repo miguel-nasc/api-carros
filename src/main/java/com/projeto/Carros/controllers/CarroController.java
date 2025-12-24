@@ -49,11 +49,12 @@ public class CarroController implements CarroControllerDocs {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "12") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction) {
-        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC
-                : Sort.Direction.ASC;
+        Sort.Direction sortDirection = getSortDirection(direction);
         Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "modelo"));
         return ResponseEntity.ok(service.findAll(pageable));
     }
+
+
 
     @Override
     @GetMapping(value = "/{id}",
@@ -63,6 +64,72 @@ public class CarroController implements CarroControllerDocs {
             MediaType.APPLICATION_YAML_VALUE })
     public CarroDTO findById(@PathVariable("id") Long id) {
         return service.findById(id);
+    }
+
+    @Override
+    @GetMapping("/modelo/{modelo}")
+    public ResponseEntity<PagedModel<EntityModel<CarroDTO>>> findByModelo(
+            @PathVariable(value = "modelo") String modelo,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "direction") String direction) {
+        Sort.Direction sortDirection = getSortDirection(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "modelo"));
+        return ResponseEntity.ok(service.findByModelo(modelo, pageable));
+    }
+
+    @Override
+    @GetMapping("/cor/{cor}")
+    public ResponseEntity<PagedModel<EntityModel<CarroDTO>>> findByCor(
+            @PathVariable(value = "cor") String cor,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "direction") String direction) {
+        Sort.Direction sortDirection = getSortDirection(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "modelo"));
+        return ResponseEntity.ok(service.findByCor(cor, pageable));
+    }
+
+    @Override
+    @GetMapping("/motorizacao/{motor}")
+    public ResponseEntity<PagedModel<EntityModel<CarroDTO>>> findByMotorizacao(
+            @PathVariable("motor") String motor,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "direction") String direction) {
+        Sort.Direction sortDirection = getSortDirection(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "modelo"));
+        return ResponseEntity.ok(service.findByMotorizacao(motor, pageable));
+    }
+
+    @Override
+    @GetMapping("/marca/{marca}")
+    public ResponseEntity<PagedModel<EntityModel<CarroDTO>>> findByMarca(
+            @PathVariable(value = "marca") String marca,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "direction") String direction) {
+        Sort.Direction sortDirection = getSortDirection(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "modelo"));
+        return ResponseEntity.ok(service.findByMarca(marca, pageable));
+    }
+
+    @Override
+    @GetMapping("/ano/{ano}")
+    public ResponseEntity<PagedModel<EntityModel<CarroDTO>>> findByAno(
+            @PathVariable(value = "ano") String ano,
+            @RequestParam(value = "page") Integer page,
+            @RequestParam(value = "size") Integer size,
+            @RequestParam(value = "direction") String direction) {
+        Sort.Direction sortDirection = getSortDirection(direction);
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "modelo"));
+        return ResponseEntity.ok(service.findByAno(ano, pageable));
+    }
+
+
+    private static Sort.Direction getSortDirection(String direction) {
+        return direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
     }
 
 }

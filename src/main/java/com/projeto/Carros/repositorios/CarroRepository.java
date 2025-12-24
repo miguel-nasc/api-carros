@@ -13,14 +13,17 @@ import org.springframework.stereotype.Repository;
 public interface CarroRepository
         extends JpaRepository<Carro, Long> {
 
+    @Query("SELECT c FROM Carro c WHERE c.marca = :marca")
+    Page<Carro> findByMarca(@Param(value = "marca") String marca, Pageable pageable);
+
     @Query("SELECT c FROM Carro c WHERE c.modelo = :modelo")
     Page<Carro> findByModelo(@Param(value = "modelo") String modelo, Pageable pageable);
 
-    @Query("SELECT c FROM Carro c WHERE c.modelo = :cor")
+    @Query("SELECT c FROM Carro c WHERE c.cor = :cor")
     Page<Carro> findByCor(@Param(value = "cor") String cor, Pageable pageable);
 
     @Query("SELECT c FROM Carro c WHERE c.ano = :ano")
-    Page<Carro> findByYear(@Param(value = "ano") String ano, Pageable pageable);
+    Page<Carro> findByAno(@Param(value = "ano") String ano, Pageable pageable);
 
     @Query("SELECT c FROM Carro c WHERE c.motorizacao = :motorizacao")
     Page<Carro> findByMotorizacao(@Param(value = "motorizacao") String motorizacao, Pageable pageable);
