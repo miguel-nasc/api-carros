@@ -3,7 +3,7 @@ package com.projeto.Carros.servicos;
 import com.projeto.Carros.controllers.CarroController;
 import com.projeto.Carros.dtos.CarroDTO;
 import com.projeto.Carros.entidades.Carro;
-import com.projeto.Carros.repositorios.CarroRespository;
+import com.projeto.Carros.repositorios.CarroRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Page;
@@ -13,6 +13,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.PagedModel;
 import org.springframework.hateoas.server.mvc.WebMvcLinkBuilder;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import java.security.InvalidParameterException;
 
@@ -25,21 +26,18 @@ public class CarroService {
 
     private final Logger logger = LoggerFactory.getLogger(CarroService.class);
 
-    private CarroRespository respository;
-    CarroService(CarroRespository respository) {
+    private final CarroRepository respository;
+    private final PagedResourcesAssembler<CarroDTO> assembler;
+
+    public CarroService(PagedResourcesAssembler<CarroDTO> assembler, CarroRepository respository) {
+        this.assembler = assembler;
         this.respository = respository;
     }
-
-    private PagedResourcesAssembler<CarroDTO> assembler;
-    CarroService(PagedResourcesAssembler<CarroDTO> assembler) {this.assembler = assembler;}
 
     //Metodos
     public CarroDTO create(CarroDTO carroDTO) {
         logger.info("Creating a new Car!");
-        if (carroDTO != null) {
-            respository.save(parseObject(carroDTO, Carro.class));
-        }
-
+        if (carroDTO != null) respository.save(parseObject(carroDTO, Carro.class));
         return carroDTO;
     }
 
@@ -90,7 +88,7 @@ public class CarroService {
 
     private void addHateoasLinks(CarroDTO carro) {
         carro.add(linkTo(methodOn(CarroController.class).findAll(0, 12, "asc"))
-                .withSelfRel().withType("GET"));
+                .withRel("findAll").withType("GET"));
         carro.add(linkTo(methodOn(CarroController.class).save(carro)).withRel("save").withType("POST"));
         carro.add(linkTo(methodOn(CarroController.class).update(carro)).withRel("update").withType("PUT"));
         carro.add(linkTo(methodOn(CarroController.class).delete(carro.getId())).withRel("delete").withType("DELETE"));

@@ -14,6 +14,10 @@ public class Carro {
     private Long id;
 
     @NotBlank
+    @Column(name = "Marca", nullable = false)
+    private String marca;
+
+    @NotBlank
     @Column(name = "Modelo", nullable = false)
     private String modelo;
 
@@ -33,15 +37,6 @@ public class Carro {
     private String motorizacao;
 
     public Carro() {
-    }
-
-    public Carro(String ano, String cor, Long id, String modelo, String motorizacao, String placa) {
-        this.ano = ano;
-        this.cor = cor;
-        this.id = id;
-        this.modelo = modelo;
-        this.motorizacao = motorizacao;
-        this.placa = placa;
     }
 
     public String getAno() {
@@ -92,20 +87,22 @@ public class Carro {
         this.placa = placa;
     }
 
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof Carro carro)) return false;
-        return Objects.equals(getId(), carro.getId()) && Objects.equals(getModelo(), carro.getModelo())
-                && Objects.equals(getAno(), carro.getAno()) && Objects.equals(getCor(), carro.getCor())
-                && Objects.equals(getPlaca(), carro.getPlaca()) && Objects.equals(getMotorizacao(),
-                carro.getMotorizacao());
+        return Objects.equals(getId(), carro.getId()) && Objects.equals(marca, carro.marca) && Objects.equals(getModelo(), carro.getModelo()) && Objects.equals(getAno(), carro.getAno()) && Objects.equals(getCor(), carro.getCor()) && Objects.equals(getPlaca(), carro.getPlaca()) && Objects.equals(getMotorizacao(), carro.getMotorizacao());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getModelo(), getAno(), getCor(), getPlaca(), getMotorizacao());
+        return Objects.hash(getId(), marca, getModelo(), getAno(), getCor(), getPlaca(), getMotorizacao());
     }
-
-
-
 }

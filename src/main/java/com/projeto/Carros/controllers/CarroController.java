@@ -3,8 +3,8 @@ package com.projeto.Carros.controllers;
 import com.projeto.Carros.controllers.docs.CarroControllerDocs;
 import com.projeto.Carros.dtos.CarroDTO;
 import com.projeto.Carros.servicos.CarroService;
-import org.hibernate.query.SortDirection;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.PagedModel;
@@ -18,22 +18,23 @@ import org.springframework.web.bind.annotation.*;
 public class CarroController implements CarroControllerDocs {
 
     CarroService service;
-    CarroController(CarroService service) {
-        this.service = service;
+    public CarroController(CarroService service) {this.service = service;}
+
+    @Override
+    @PostMapping
+    public ResponseEntity<CarroDTO> save(@RequestBody CarroDTO carroDTO) {
+        service.create(carroDTO);
+        return ResponseEntity.ok().build();
     }
 
     @Override
-    public CarroDTO save(CarroDTO carroDTO) {
-        return service.create(carroDTO);
-    }
-
-    @Override
+    @PutMapping
     public CarroDTO update(CarroDTO carroDTO) {
         return service.update(carroDTO);
     }
 
     @Override
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable (value = "id") Long id) {
         service.delete(id);
         return ResponseEntity.ok().build();
@@ -48,10 +49,20 @@ public class CarroController implements CarroControllerDocs {
             @RequestParam(value = "page", defaultValue = "0") Integer page,
             @RequestParam(value = "size", defaultValue = "12") Integer size,
             @RequestParam(value = "direction", defaultValue = "asc") String direction) {
-        SortDirection sortDirection = direction.equalsIgnoreCase("desc") ? SortDirection.DESCENDING :
-                SortDirection.ASCENDING;
-        var pageable = PageRequest.of(page, size, Sort.by(String.valueOf(sortDirection), "modelo"));
+        Sort.Direction sortDirection = direction.equalsIgnoreCase("desc") ? Sort.Direction.DESC
+                : Sort.Direction.ASC;
+        Pageable pageable = PageRequest.of(page, size, Sort.by(sortDirection, "modelo"));
         return ResponseEntity.ok(service.findAll(pageable));
+    }
+
+    @Override
+    @GetMapping(value = "/{id}",
+    produces = {
+            MediaType.APPLICATION_JSON_VALUE,
+            MediaType.APPLICATION_XML_VALUE,
+            MediaType.APPLICATION_YAML_VALUE })
+    public CarroDTO findById(@PathVariable("id") Long id) {
+        return service.findById(id);
     }
 
 }

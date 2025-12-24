@@ -1,25 +1,16 @@
 package com.projeto.Carros.dtos;
 
-import org.springframework.hateoas.Link;
 import org.springframework.hateoas.RepresentationModel;
-
 import java.util.Objects;
 
 public class CarroDTO extends RepresentationModel<CarroDTO> {
     private Long id;
+    private String marca;
     private String modelo;
     private String ano;
     private String cor;
     private String placa;
     private String motorizacao;
-
-    public CarroDTO(String ano, Long id, String modelo, String motorizacao, String placa) {
-        this.ano = ano;
-        this.id = id;
-        this.modelo = modelo;
-        this.motorizacao = motorizacao;
-        this.placa = placa;
-    }
 
     public CarroDTO() {
     }
@@ -72,16 +63,23 @@ public class CarroDTO extends RepresentationModel<CarroDTO> {
         this.cor = cor;
     }
 
+    public String getMarca() {
+        return marca;
+    }
+
+    public void setMarca(String marca) {
+        this.marca = marca;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (!(o instanceof CarroDTO carroDTO)) return false;
-        return Objects.equals(getId(), carroDTO.getId()) && Objects.equals(getModelo(), carroDTO.getModelo()) && Objects.equals(getAno(), carroDTO.getAno()) && Objects.equals(getCor(), carroDTO.getCor()) && Objects.equals(getPlaca(), carroDTO.getPlaca()) && Objects.equals(getMotorizacao(), carroDTO.getMotorizacao());
+        if (!super.equals(o)) return false;
+        return Objects.equals(getId(), carroDTO.getId()) && Objects.equals(marca, carroDTO.marca) && Objects.equals(getModelo(), carroDTO.getModelo()) && Objects.equals(getAno(), carroDTO.getAno()) && Objects.equals(getCor(), carroDTO.getCor()) && Objects.equals(getPlaca(), carroDTO.getPlaca()) && Objects.equals(getMotorizacao(), carroDTO.getMotorizacao());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getModelo(), getAno(), getCor(), getPlaca(), getMotorizacao());
+        return Objects.hash(super.hashCode(), getId(), marca, getModelo(), getAno(), getCor(), getPlaca(), getMotorizacao());
     }
-
-
 }
