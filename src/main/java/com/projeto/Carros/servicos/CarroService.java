@@ -48,9 +48,9 @@ public class CarroService {
         respository.delete(carro);
     }
 
-    public CarroDTO update(CarroDTO carroDTO) {
+    public CarroDTO update(Long id, CarroDTO carroDTO) {
         logger.info("Updating a Car!");
-        Carro carro = respository.findById(carroDTO.getId())
+        Carro carro = respository.findById(id)
                 .orElseThrow(() -> new InvalidParameterException("Id não registrado para nenhum Carro"));
         carro.setAno(carroDTO.getAno());
         carro.setCor(carroDTO.getCor());
@@ -58,7 +58,7 @@ public class CarroService {
         carro.setPlaca(carroDTO.getPlaca());
         carro.setMotorizacao(carroDTO.getMotorizacao());
         respository.save(carro);
-        return carroDTO;
+        return parseObject(carro, CarroDTO.class);
     }
 
     public CarroDTO findById(Long id) {
@@ -119,7 +119,7 @@ public class CarroService {
 
     private void addHateoasLinks(CarroDTO carro) {
         carro.add(linkTo(methodOn(CarroController.class).save(carro)).withRel("save").withType("POST"));
-        carro.add(linkTo(methodOn(CarroController.class).update(carro)).withRel("update").withType("PUT"));
+        carro.add(linkTo(methodOn(CarroController.class).update(1L, carro)).withRel("update").withType("PUT"));
         carro.add(linkTo(methodOn(CarroController.class).delete(carro.getId())).withRel("delete").withType("DELETE"));
 
         carro.add(linkTo(methodOn(CarroController.class).findAll(0, 12, "asc"))

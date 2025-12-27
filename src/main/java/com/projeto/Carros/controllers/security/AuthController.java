@@ -32,7 +32,7 @@ public class AuthController implements AuthControllerDocs {
 
 
     @Override
-    @PutMapping("/refresh/{username}")
+    @PostMapping("/refresh/{username}")
     public ResponseEntity<?> refresh(@PathVariable("username") String username,
                                      @RequestHeader("Authorization") String refreshToken) {
         if(parametersAreInvalid(username, refreshToken)) return ResponseEntity.status(HttpStatus.FORBIDDEN)

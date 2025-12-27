@@ -24,7 +24,7 @@ public interface CarroControllerDocs {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content )})
-    ResponseEntity<CarroDTO> save(@RequestBody CarroDTO carroDTO);
+    ResponseEntity<CarroDTO> save(CarroDTO carroDTO);
 
 
     @Operation(summary = "Atualiza um Carro já existente",
@@ -38,7 +38,7 @@ public interface CarroControllerDocs {
                     @ApiResponse(description = "Unauthorized", responseCode = "401", content = @Content),
                     @ApiResponse(description = "Not Found", responseCode = "404", content = @Content),
                     @ApiResponse(description = "Internal Server Error", responseCode = "500", content = @Content )})
-    CarroDTO update(@RequestBody CarroDTO carroDTO);
+    CarroDTO update(Long id, CarroDTO carroDTO);
 
     @Operation(summary = "Deletando um Carro",
             description = "Deleta um Carro que está cadastrado no banco!",

@@ -28,9 +28,10 @@ public class CarroController implements CarroControllerDocs {
     }
 
     @Override
-    @PutMapping
-    public CarroDTO update(CarroDTO carroDTO) {
-        return service.update(carroDTO);
+    @PutMapping("/{id}")
+    public CarroDTO update(@PathVariable("id") Long id,
+                           @RequestBody CarroDTO carroDTO) {
+        return service.update(id, carroDTO);
     }
 
     @Override
@@ -41,7 +42,7 @@ public class CarroController implements CarroControllerDocs {
     }
 
     @Override
-    @GetMapping(value = "/findAll",
+    @GetMapping(
             produces = {
                 MediaType.APPLICATION_JSON_VALUE,
                 MediaType.APPLICATION_XML_VALUE })
