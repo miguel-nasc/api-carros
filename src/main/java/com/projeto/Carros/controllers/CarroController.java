@@ -3,6 +3,7 @@ package com.projeto.Carros.controllers;
 import com.projeto.Carros.controllers.docs.CarroControllerDocs;
 import com.projeto.Carros.dtos.CarroDTO;
 import com.projeto.Carros.servicos.CarroService;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -22,7 +23,7 @@ public class CarroController implements CarroControllerDocs {
 
     @Override
     @PostMapping
-    public ResponseEntity<CarroDTO> save(@RequestBody CarroDTO carroDTO) {
+    public ResponseEntity<CarroDTO> save(@RequestBody @Valid CarroDTO carroDTO) {
         service.create(carroDTO);
         return ResponseEntity.ok().build();
     }
@@ -30,7 +31,7 @@ public class CarroController implements CarroControllerDocs {
     @Override
     @PutMapping("/{id}")
     public CarroDTO update(@PathVariable("id") Long id,
-                           @RequestBody CarroDTO carroDTO) {
+                           @RequestBody @Valid CarroDTO carroDTO) {
         return service.update(id, carroDTO);
     }
 

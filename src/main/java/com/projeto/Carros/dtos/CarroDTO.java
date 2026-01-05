@@ -1,15 +1,22 @@
 package com.projeto.Carros.dtos;
 
+import jakarta.validation.constraints.NotBlank;
 import org.springframework.hateoas.RepresentationModel;
 import java.util.Objects;
 
 public class CarroDTO extends RepresentationModel<CarroDTO> {
     private Long id;
+    @NotBlank
     private String marca;
+    @NotBlank
     private String modelo;
+    @NotBlank
     private String ano;
+    @NotBlank
     private String cor;
+    @NotBlank
     private String placa;
+    @NotBlank
     private String motorizacao;
 
     public CarroDTO() {
